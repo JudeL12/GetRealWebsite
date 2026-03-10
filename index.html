@@ -721,10 +721,11 @@
     <div class="section-inner">
       <h2 class="waitlist-headline" id="waitlistHeadline">Stay in the loop.</h2>
       <p class="waitlist-subtitle" id="waitlistSub">Get Real is coming soon. Sign up for updates and early access.</p>
-      <form class="waitlist-form" id="waitlistForm" action="https://formspree.io/f/PLACEHOLDER" method="POST">
+      <form class="waitlist-form" id="waitlistForm" onsubmit="event.preventDefault(); const e=this.email.value; window.location.href='mailto:getrealfinances@gmail.com?subject=Newsletter Signup&body=Please add me to the Get Real newsletter: '+encodeURIComponent(e); this.email.value=''; document.getElementById('formSuccess').style.display='block';">
         <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
         <button type="submit" class="btn-primary btn-pulse">Subscribe</button>
       </form>
+      <p id="formSuccess" style="display:none; color:#FF6B35; font-size:0.95rem; margin-bottom:8px;">Opening your email client...</p>
       <p class="waitlist-note" id="waitlistNote">No spam. Just updates on launch and early access.</p>
     </div>
   </section>
