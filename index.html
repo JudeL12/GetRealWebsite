@@ -435,27 +435,13 @@
       margin-bottom: 72px;
     }
 
-    .philosophy-columns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 72px;
-    }
-
-    .philosophy-col {
-      opacity: 0;
-    }
-
-    .philosophy-col p {
-      font-size: clamp(0.98rem, 1.3vw, 1.1rem);
+    .built-body {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: clamp(1.05rem, 1.5vw, 1.25rem);
       line-height: 1.8;
       color: #444;
-      margin-bottom: 22px;
-    }
-
-    .philosophy-divider {
-      width: 2px;
-      background: linear-gradient(to bottom, transparent, #FF6B35, transparent);
-      justify-self: center;
+      opacity: 0;
     }
 
     /* ===================== WAITLIST ===================== */
@@ -588,11 +574,6 @@
         grid-template-columns: 1fr;
       }
 
-      .philosophy-columns {
-        grid-template-columns: 1fr;
-        gap: 36px;
-      }
-
       .waitlist-form {
         flex-direction: column;
       }
@@ -639,8 +620,8 @@
     <a href="#hero" title="Top"></a>
     <a href="#problem" title="The Problem"></a>
     <a href="#solution" title="The Solution"></a>
-    <a href="#philosophy" title="Philosophy"></a>
-    <a href="#waitlist" title="Waitlist"></a>
+    <a href="#built-different" title="Built Different"></a>
+    <a href="#newsletter" title="Newsletter"></a>
   </nav>
 
   <!-- ==================== HERO ==================== -->
@@ -656,7 +637,7 @@
       <p class="hero-subtitle" id="heroSub">Own Your Finances.</p>
       <p class="hero-desc" id="heroDesc">AI-powered financial recovery. Coming soon.</p>
       <div class="hero-cta" id="heroCta">
-        <a href="#waitlist" class="btn-primary">Join the Waitlist &darr;</a>
+        <a href="#newsletter" class="btn-primary">Get Updates &darr;</a>
       </div>
     </div>
     <div class="hero-scroll-hint" id="heroScrollHint">
@@ -722,36 +703,27 @@
     <div class="section-wipe wipe-dark-to-light"></div>
   </section>
 
-  <!-- ==================== PHILOSOPHY ==================== -->
-  <section class="section" id="philosophy">
-    <div class="section-inner">
-      <h2 class="philosophy-headline" id="philHeadline">A steering wheel,<br>not a rearview mirror.</h2>
-      <div class="philosophy-columns">
-        <div class="philosophy-col" id="philLeft">
-          <p>Get Real isn't a budgeting app. It's a financial recovery platform. We don't just track what you spent yesterday. We intervene today so tomorrow looks different.</p>
-          <p>You connect your spending history. AI builds a plan with you. Then active controls protect that plan &mdash; location-based nudges, spending limits, cool-down periods. As your habits improve, the guardrails fade. The app trusts you more over time.</p>
-        </div>
-        <div class="philosophy-col" id="philRight">
-          <p>Free for users. No subscription. No paywall. We earn interchange on card spending and partner referrals. Our incentives are aligned: we only win when you recover.</p>
-          <p>College will always be there. Retirement won't wait. We're building Get Real so Gen Z doesn't have to learn the hard way.</p>
-        </div>
-      </div>
+  <!-- ==================== BUILT DIFFERENT ==================== -->
+  <section class="section" id="built-different">
+    <div class="section-inner" style="text-align: center;">
+      <h2 class="philosophy-headline" id="builtHeadline">Built different.</h2>
+      <p class="built-body" id="builtBody">Free for users. No subscription. No paywall. We earn interchange on card spending and partner referrals. Our incentives are aligned: we only win when you recover.</p>
     </div>
     <div class="section-wipe wipe-light-to-dark"></div>
   </section>
 
-  <!-- ==================== WAITLIST ==================== -->
-  <section class="section" id="waitlist">
+  <!-- ==================== NEWSLETTER ==================== -->
+  <section class="section" id="newsletter">
     <div class="orb-field">
       <div class="orb orb--orange" style="width:600px;height:600px;top:-180px;left:-120px;"></div>
       <div class="orb orb--red" style="width:350px;height:350px;bottom:-80px;right:-60px;"></div>
     </div>
     <div class="section-inner">
-      <h2 class="waitlist-headline" id="waitlistHeadline">Be first in line.</h2>
-      <p class="waitlist-subtitle" id="waitlistSub">Get Real is coming soon. Join the waitlist for early access.</p>
+      <h2 class="waitlist-headline" id="waitlistHeadline">Stay in the loop.</h2>
+      <p class="waitlist-subtitle" id="waitlistSub">Get Real is coming soon. Sign up for updates and early access.</p>
       <form class="waitlist-form" id="waitlistForm" action="https://formspree.io/f/PLACEHOLDER" method="POST">
         <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
-        <button type="submit" class="btn-primary btn-pulse">Join the Waitlist</button>
+        <button type="submit" class="btn-primary btn-pulse">Subscribe</button>
       </form>
       <p class="waitlist-note" id="waitlistNote">No spam. Just updates on launch and early access.</p>
     </div>
@@ -761,7 +733,6 @@
   <footer>
     <div class="footer-left">Get Real &copy; 2026</div>
     <div class="footer-right">
-      Built by Jude Loza &middot; Pomona, CA<br>
       <a href="mailto:getrealfinances@gmail.com">getrealfinances@gmail.com</a>
     </div>
   </footer>
@@ -1062,61 +1033,37 @@
       });
     });
 
-    // ===== PHILOSOPHY: COLUMNS SLIDE IN FROM SIDES =====
-    gsap.from('#philHeadline', {
+    // ===== BUILT DIFFERENT: HEADLINE + BODY FADE =====
+    gsap.from('#builtHeadline', {
       opacity: 0,
       y: 50,
       duration: 0.8,
       ease: 'power3.out',
       scrollTrigger: {
-        trigger: '#philHeadline',
+        trigger: '#builtHeadline',
         start: 'top 80%',
         toggleActions: 'play none none reverse'
       }
     });
 
-    gsap.to('#philLeft', {
+    gsap.to('#builtBody', {
       opacity: 1,
       duration: 0.8,
       ease: 'power3.out',
       scrollTrigger: {
-        trigger: '.philosophy-columns',
-        start: 'top 75%',
+        trigger: '#builtBody',
+        start: 'top 80%',
         toggleActions: 'play none none reverse'
       }
     });
 
-    gsap.from('#philLeft', {
-      x: -80,
-      duration: 0.9,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.philosophy-columns',
-        start: 'top 75%',
-        toggleActions: 'play none none reverse'
-      }
-    });
-
-    gsap.to('#philRight', {
-      opacity: 1,
+    gsap.from('#builtBody', {
+      y: 40,
       duration: 0.8,
-      delay: 0.15,
       ease: 'power3.out',
       scrollTrigger: {
-        trigger: '.philosophy-columns',
-        start: 'top 75%',
-        toggleActions: 'play none none reverse'
-      }
-    });
-
-    gsap.from('#philRight', {
-      x: 80,
-      duration: 0.9,
-      delay: 0.15,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.philosophy-columns',
-        start: 'top 75%',
+        trigger: '#builtBody',
+        start: 'top 80%',
         toggleActions: 'play none none reverse'
       }
     });
@@ -1124,7 +1071,7 @@
     // ===== WAITLIST: SCALE-UP ENTRANCE =====
     const waitTl = gsap.timeline({
       scrollTrigger: {
-        trigger: '#waitlist',
+        trigger: '#newsletter',
         start: 'top 70%',
         toggleActions: 'play none none reverse'
       }
@@ -1166,7 +1113,7 @@
 
     // ===== PARALLAX: SECTION TRANSITIONS =====
     // Subtle zoom effect on dark sections as you scroll through
-    ['#solution', '#waitlist'].forEach(sel => {
+    ['#solution', '#newsletter'].forEach(sel => {
       gsap.from(sel + ' .section-inner', {
         scale: 0.92,
         opacity: 0.5,
