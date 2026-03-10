@@ -290,7 +290,11 @@
     <div class="contact-card">
       <h1 class="contact-headline" id="headline">Get in touch</h1>
       <p class="contact-subtitle" id="subtitle">Questions, partnerships, or just want to say hi.</p>
-      <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); var n=this.name.value,e=this.email.value,m=this.message.value; window.location.href='mailto:getrealfinances@gmail.com?subject=Contact from '+encodeURIComponent(n)+'&body='+encodeURIComponent('From: '+n+'\nEmail: '+e+'\n\n'+m); document.getElementById('contactSuccess').style.display='block';"
+      <form class="contact-form" id="contactForm" action="https://formsubmit.co/getrealfinances@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New contact from Get Real website">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://getreal.money/contact.html?sent=1">
+        <input type="text" name="_honey" style="display:none">
         <div class="form-field">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
@@ -304,8 +308,7 @@
           <textarea id="message" name="message" placeholder="What's on your mind?" required></textarea>
         </div>
         <button type="submit" class="btn-submit">Send Message</button>
-        <p id="contactSuccess" style="display:none; color:#FF6B35; font-size:0.95rem;">Opening your email client...</p>
-        <p class="form-note">Or email us directly at <a href="mailto:getrealfinances@gmail.com" style="color: #FF6B35;">getrealfinances@gmail.com</a></p>
+        <p id="contactSuccess" style="display:none; color:#FF6B35; font-size:0.95rem; margin-top:12px;">Message sent! We'll get back to you soon.</p>
       </form>
     </div>
   </main>
@@ -337,6 +340,12 @@
         repeat: -1
       });
     });
+
+    // Show success message if redirected back after submission
+    if (window.location.search.includes('sent=1')) {
+      document.getElementById('contactSuccess').style.display = 'block';
+      document.getElementById('contactForm').reset();
+    }
 
     // Magnetic button
     if (window.matchMedia('(pointer: fine)').matches) {
