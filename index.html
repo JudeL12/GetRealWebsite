@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Real - AI-Powered Financial Recovery</title>
+  <meta name="description" content="Get Real is an AI-powered financial recovery platform. Not a budgeting app. A system that intervenes when it matters. Coming soon.">
+  <meta name="theme-color" content="#1A1A2E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400;1,9..40,500&display=swap" rel="stylesheet">
+  <!-- GSAP + ScrollTrigger for cinematic scroll animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    /* ===================== RESET & BASE ===================== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: #FFFFFF;
+      background: #1A1A2E;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: 'DM Sans', sans-serif; cursor: pointer; border: none; }
+    input { font-family: 'DM Sans', sans-serif; border: none; outline: none; }
+
+    /* ===================== SCROLL PROGRESS ===================== */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #FF6B35, #E8533F);
+      z-index: 1000;
+      width: 0%;
+      transform-origin: left;
+    }
+
+    /* ===================== DOT NAV ===================== */
+    .dot-nav {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .dot-nav a {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      transition: background 0.4s, transform 0.4s, box-shadow 0.4s;
+    }
+
+    .dot-nav a.active {
+      background: #FF6B35;
+      transform: scale(1.4);
+      box-shadow: 0 0 12px rgba(255, 107, 53, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .dot-nav { display: none; }
+    }
+
+    /* ===================== SECTIONS BASE ===================== */
+    .section {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===================== FLOATING ORB SYSTEM ===================== */
+    .orb-field {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      will-change: transform;
+    }
+
+    .orb--orange {
+      background: radial-gradient(circle, rgba(255, 107, 53, 0.25) 0%, rgba(255, 107, 53, 0) 70%);
+    }
+
+    .orb--red {
+      background: radial-gradient(circle, rgba(232, 83, 63, 0.18) 0%, rgba(232, 83, 63, 0) 70%);
+    }
+
+    .orb--blue {
+      background: radial-gradient(circle, rgba(100, 100, 200, 0.1) 0%, rgba(100, 100, 200, 0) 70%);
+    }
+
+    /* ===================== HERO ===================== */
+    #hero {
+      background: #1A1A2E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-size: clamp(4.5rem, 14vw, 12rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      margin-bottom: 24px;
+    }
+
+    .hero-title .char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(100px) rotateX(40deg);
+    }
+
+    .hero-subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(1.3rem, 3vw, 2.2rem);
+      color: #FF6B35;
+      font-style: italic;
+      font-weight: 500;
+      margin-bottom: 20px;
+      opacity: 0;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+      color: #B0B0C0;
+      margin-bottom: 52px;
+      opacity: 0;
+    }
+
+    .hero-cta {
+      opacity: 0;
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      opacity: 0;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, #FF6B35, transparent);
+      margin: 0 auto 8px;
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    .scroll-text {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #666;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.5); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: #FF6B35;
+      color: #FFFFFF;
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 20px 44px;
+      border-radius: 60px;
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      letter-spacing: 0.01em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: #E8533F;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(255, 107, 53, 0.35);
+    }
+
+    .btn-primary:hover::before {
+      opacity: 1;
+    }
+
+    /* ===================== HERO PARALLAX EXIT ===================== */
+    .hero-parallax-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===================== PROBLEM ===================== */
+    #problem {
+      background: #F5F5F7;
+      color: #1A1A2E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .problem-headline {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .problem-headline .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-bottom: 64px;
+    }
+
+    .stat-block {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(80px) scale(0.9);
+    }
+
+    .stat-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
+      font-weight: 900;
+      color: #FF6B35;
+      line-height: 1;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .stat-number::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 40px;
+      height: 3px;
+      background: #FF6B35;
+      border-radius: 2px;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .stat-block.counted .stat-number::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    .stat-label {
+      font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+      color: #555;
+      line-height: 1.55;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .problem-text {
+      text-align: center;
+      max-width: 750px;
+      margin: 0 auto;
+      font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+      line-height: 1.75;
+      color: #444;
+      opacity: 0;
+    }
+
+    /* ===================== SOLUTION ===================== */
+    #solution {
+      background: #1A1A2E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .solution-headline {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .solution-subtitle {
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: #FF6B35;
+      font-style: italic;
+      font-weight: 500;
+      margin-bottom: 72px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s;
+      opacity: 0;
+      transform: translateY(60px);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #FF6B35, #E8533F);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .feature-card.visible::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 107, 53, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover::after {
+      opacity: 1;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .feature-card h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+      color: #B0B0C0;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===================== PHILOSOPHY ===================== */
+    #philosophy {
+      background: #F5F5F7;
+      color: #1A1A2E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .philosophy-headline {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .philosophy-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+    }
+
+    .philosophy-col {
+      opacity: 0;
+    }
+
+    .philosophy-col p {
+      font-size: clamp(0.98rem, 1.3vw, 1.1rem);
+      line-height: 1.8;
+      color: #444;
+      margin-bottom: 22px;
+    }
+
+    .philosophy-divider {
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, #FF6B35, transparent);
+      justify-self: center;
+    }
+
+    /* ===================== WAITLIST ===================== */
+    #waitlist {
+      background: #1A1A2E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .waitlist-headline {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      margin-bottom: 18px;
+    }
+
+    .waitlist-subtitle {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: #B0B0C0;
+      margin-bottom: 52px;
+    }
+
+    .waitlist-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      max-width: 540px;
+      margin: 0 auto 28px;
+    }
+
+    .waitlist-form input[type="email"] {
+      flex: 1;
+      padding: 20px 28px;
+      border-radius: 60px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      font-size: 1rem;
+      transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+    }
+
+    .waitlist-form input[type="email"]::placeholder { color: #666; }
+
+    .waitlist-form input[type="email"]:focus {
+      border-color: #FF6B35;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+    }
+
+    .waitlist-form .btn-primary {
+      white-space: nowrap;
+      padding: 20px 36px;
+    }
+
+    .waitlist-note {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .btn-pulse {
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4); }
+      50% { box-shadow: 0 0 0 16px rgba(255, 107, 53, 0); }
+    }
+
+    /* ===================== SECTION TRANSITION OVERLAYS ===================== */
+    .section-wipe {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .wipe-dark-to-light {
+      background: linear-gradient(to bottom, transparent, #F5F5F7);
+    }
+
+    .wipe-light-to-dark {
+      background: linear-gradient(to bottom, transparent, #1A1A2E);
+    }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: #0E0E1E;
+      padding: 36px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .footer-left {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #B0B0C0;
+    }
+
+    .footer-right {
+      font-size: 0.85rem;
+      color: #555;
+      text-align: right;
+      line-height: 1.65;
+    }
+
+    .footer-right a {
+      color: #777;
+      transition: color 0.3s;
+    }
+
+    .footer-right a:hover { color: #FF6B35; }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 52px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .philosophy-columns {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .waitlist-form {
+        flex-direction: column;
+      }
+
+      .waitlist-form input[type="email"],
+      .waitlist-form .btn-primary {
+        width: 100%;
+        text-align: center;
+      }
+
+      .section-inner {
+        padding: 80px 20px;
+      }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-right { text-align: center; }
+    }
+
+    /* ===================== GRAIN OVERLAY ===================== */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 128px 128px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Dot Nav -->
+  <nav class="dot-nav" id="dotNav">
+    <a href="#hero" title="Top"></a>
+    <a href="#problem" title="The Problem"></a>
+    <a href="#solution" title="The Solution"></a>
+    <a href="#philosophy" title="Philosophy"></a>
+    <a href="#waitlist" title="Waitlist"></a>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="section" id="hero">
+    <div class="orb-field" id="heroOrbs">
+      <div class="orb orb--orange" style="width:700px;height:700px;top:-200px;right:-150px;"></div>
+      <div class="orb orb--red" style="width:500px;height:500px;bottom:-150px;left:-100px;"></div>
+      <div class="orb orb--blue" style="width:400px;height:400px;top:30%;left:50%;"></div>
+      <div class="orb orb--orange" style="width:200px;height:200px;top:60%;left:20%;opacity:0.5;"></div>
+    </div>
+    <div class="section-inner hero-content">
+      <h1 class="hero-title" id="heroTitle">Get Real</h1>
+      <p class="hero-subtitle" id="heroSub">Own Your Finances.</p>
+      <p class="hero-desc" id="heroDesc">AI-powered financial recovery. Coming soon.</p>
+      <div class="hero-cta" id="heroCta">
+        <a href="#waitlist" class="btn-primary">Join the Waitlist &darr;</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint" id="heroScrollHint">
+      <div class="scroll-line"></div>
+      <span class="scroll-text">Scroll</span>
+    </div>
+    <div class="section-wipe wipe-dark-to-light"></div>
+  </section>
+
+  <!-- ==================== PROBLEM ==================== -->
+  <section class="section" id="problem">
+    <div class="section-inner">
+      <h2 class="problem-headline" id="problemHeadline">The system is broken.</h2>
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-block">
+          <div class="stat-number" data-target="59" data-suffix="%">0%</div>
+          <p class="stat-label">of Americans can't cover a $1,000 emergency.</p>
+        </div>
+        <div class="stat-block">
+          <div class="stat-number" data-target="1.3" data-prefix="$" data-suffix="T" data-decimal="1">$0T</div>
+          <p class="stat-label">in credit card debt. A record high.</p>
+        </div>
+        <div class="stat-block">
+          <div class="stat-number" data-target="88" data-suffix="%">0%</div>
+          <p class="stat-label">of Americans in credit card debt regret their spending.</p>
+        </div>
+      </div>
+      <p class="problem-text" id="problemText">
+        Budgeting apps solve the wrong problem. They track what already happened. Nothing intervenes at the moment you're about to make the wrong call. People don't need another spreadsheet. They need something that shows up when it matters.
+      </p>
+    </div>
+    <div class="section-wipe wipe-light-to-dark"></div>
+  </section>
+
+  <!-- ==================== SOLUTION ==================== -->
+  <section class="section" id="solution">
+    <div class="orb-field">
+      <div class="orb orb--orange" style="width:500px;height:500px;bottom:-100px;right:-80px;"></div>
+      <div class="orb orb--red" style="width:300px;height:300px;top:20%;left:-50px;"></div>
+    </div>
+    <div class="section-inner">
+      <h2 class="solution-headline" id="solutionHeadline">Meet Get Real.</h2>
+      <p class="solution-subtitle" id="solutionSub">AI that understands your finances, then acts on them.</p>
+      <div class="features-grid" id="featuresGrid">
+        <div class="feature-card">
+          <h3>AI Financial Audit</h3>
+          <p>We diagnose your situation first. Not generic budgets &mdash; a real picture of what's broken and why.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Personalized Debt Payoff Plan</h3>
+          <p>AI builds a plan with you &mdash; credit cards, auto loans, all of it &mdash; with a real timeline to get out.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Intelligent Spending Controls</h3>
+          <p>A prepaid card with active friction: location-based alerts, cool-down periods, declined purchases when you're off-plan.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Visible Progress</h3>
+          <p>See exactly how every decision helps or hurts your goals. Real-time. No guessing.</p>
+        </div>
+      </div>
+    </div>
+    <div class="section-wipe wipe-dark-to-light"></div>
+  </section>
+
+  <!-- ==================== PHILOSOPHY ==================== -->
+  <section class="section" id="philosophy">
+    <div class="section-inner">
+      <h2 class="philosophy-headline" id="philHeadline">A steering wheel,<br>not a rearview mirror.</h2>
+      <div class="philosophy-columns">
+        <div class="philosophy-col" id="philLeft">
+          <p>Get Real isn't a budgeting app. It's a financial recovery platform. We don't just track what you spent yesterday. We intervene today so tomorrow looks different.</p>
+          <p>You connect your spending history. AI builds a plan with you. Then active controls protect that plan &mdash; location-based nudges, spending limits, cool-down periods. As your habits improve, the guardrails fade. The app trusts you more over time.</p>
+        </div>
+        <div class="philosophy-col" id="philRight">
+          <p>Free for users. No subscription. No paywall. We earn interchange on card spending and partner referrals. Our incentives are aligned: we only win when you recover.</p>
+          <p>College will always be there. Retirement won't wait. We're building Get Real so Gen Z doesn't have to learn the hard way.</p>
+        </div>
+      </div>
+    </div>
+    <div class="section-wipe wipe-light-to-dark"></div>
+  </section>
+
+  <!-- ==================== WAITLIST ==================== -->
+  <section class="section" id="waitlist">
+    <div class="orb-field">
+      <div class="orb orb--orange" style="width:600px;height:600px;top:-180px;left:-120px;"></div>
+      <div class="orb orb--red" style="width:350px;height:350px;bottom:-80px;right:-60px;"></div>
+    </div>
+    <div class="section-inner">
+      <h2 class="waitlist-headline" id="waitlistHeadline">Be first in line.</h2>
+      <p class="waitlist-subtitle" id="waitlistSub">Get Real is coming soon. Join the waitlist for early access.</p>
+      <form class="waitlist-form" id="waitlistForm" action="https://formspree.io/f/PLACEHOLDER" method="POST">
+        <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+        <button type="submit" class="btn-primary btn-pulse">Join the Waitlist</button>
+      </form>
+      <p class="waitlist-note" id="waitlistNote">No spam. Just updates on launch and early access.</p>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <div class="footer-left">Get Real &copy; 2026</div>
+    <div class="footer-right">
+      Built by Jude Loza &middot; Pomona, CA<br>
+      <a href="mailto:getrealfinances@gmail.com">getrealfinances@gmail.com</a>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          gsap.to(window, {
+            scrollTo: { y: target, autoKill: false },
+            duration: 1.2,
+            ease: "power3.inOut"
+          });
+        }
+      });
+    });
+
+    // Fallback: native smooth scroll if GSAP ScrollTo not loaded
+    if (!gsap.plugins || !gsap.plugins.scrollTo) {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', e => {
+          e.preventDefault();
+          document.querySelector(anchor.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    }
+
+    // ===== SCROLL PROGRESS =====
+    gsap.to('.scroll-progress', {
+      width: '100%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: document.body,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.3
+      }
+    });
+
+    // ===== DOT NAV =====
+    const sections = document.querySelectorAll('.section');
+    const dots = document.querySelectorAll('#dotNav a');
+
+    sections.forEach((section, i) => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: () => setActiveDot(i),
+        onEnterBack: () => setActiveDot(i)
+      });
+    });
+
+    function setActiveDot(index) {
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+
+    // ===== HERO: SPLIT TEXT + STAGGERED ENTRANCE =====
+    const heroTitle = document.getElementById('heroTitle');
+    const titleText = heroTitle.textContent;
+    heroTitle.innerHTML = '';
+    // Split into words then chars
+    titleText.split('').forEach((char, i) => {
+      if (char === ' ') {
+        heroTitle.innerHTML += ' ';
+      } else {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = char;
+        heroTitle.appendChild(span);
+      }
+    });
+
+    // Hero entrance timeline
+    const heroTl = gsap.timeline({ delay: 0.3 });
+
+    heroTl
+      .to('.hero-title .char', {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        duration: 0.8,
+        stagger: 0.06,
+        ease: 'power4.out'
+      })
+      .to('#heroSub', {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out'
+      }, '-=0.3')
+      .from('#heroSub', {
+        y: 30,
+        duration: 0.7,
+        ease: 'power3.out'
+      }, '<')
+      .to('#heroDesc', {
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power3.out'
+      }, '-=0.3')
+      .from('#heroDesc', {
+        y: 20,
+        duration: 0.6,
+        ease: 'power3.out'
+      }, '<')
+      .to('#heroCta', {
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power3.out'
+      }, '-=0.2')
+      .from('#heroCta', {
+        y: 20,
+        scale: 0.95,
+        duration: 0.6,
+        ease: 'power3.out'
+      }, '<')
+      .to('#heroScrollHint', {
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out'
+      }, '-=0.1');
+
+    // Hero parallax on scroll (content rises up, orbs drift)
+    gsap.to('.hero-content', {
+      y: -150,
+      opacity: 0,
+      scale: 0.95,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    gsap.to('#heroScrollHint', {
+      opacity: 0,
+      y: -40,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: '10% top',
+        end: '30% top',
+        scrub: true
+      }
+    });
+
+    // Orb parallax
+    document.querySelectorAll('#heroOrbs .orb').forEach((orb, i) => {
+      gsap.to(orb, {
+        y: -100 - (i * 60),
+        x: (i % 2 === 0 ? 40 : -40),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+    });
+
+    // ===== PROBLEM: WORD-BY-WORD HEADLINE + STAGGER STATS =====
+    // Split headline into words
+    const probHeadline = document.getElementById('problemHeadline');
+    const probWords = probHeadline.textContent.split(' ');
+    probHeadline.innerHTML = probWords.map(w => `<span class="word">${w}</span>`).join(' ');
+
+    gsap.to('#problemHeadline .word', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.12,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#problemHeadline',
+        start: 'top 80%',
+        end: 'top 40%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // Stats: staggered entrance with scale
+    const statBlocks = gsap.utils.toArray('.stat-block');
+    gsap.to(statBlocks, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#statsGrid',
+        start: 'top 75%',
+        toggleActions: 'play none none reverse',
+        onEnter: () => animateStats()
+      }
+    });
+
+    // Stat counter
+    let statsCounted = false;
+    function animateStats() {
+      if (statsCounted) return;
+      statsCounted = true;
+
+      document.querySelectorAll('.stat-number').forEach(el => {
+        const target = parseFloat(el.dataset.target);
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const dec = el.dataset.decimal ? parseInt(el.dataset.decimal) : 0;
+        const obj = { val: 0 };
+
+        gsap.to(obj, {
+          val: target,
+          duration: 2.2,
+          ease: 'power2.out',
+          onUpdate: () => {
+            el.textContent = prefix + (dec > 0 ? obj.val.toFixed(dec) : Math.floor(obj.val)) + suffix;
+          },
+          onComplete: () => {
+            el.textContent = prefix + (dec > 0 ? target.toFixed(dec) : target) + suffix;
+            el.closest('.stat-block').classList.add('counted');
+          }
+        });
+      });
+    }
+
+    // Problem text fade
+    gsap.to('#problemText', {
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '#problemText',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    gsap.from('#problemText', {
+      y: 40,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '#problemText',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // ===== SOLUTION: HEADLINE + CARDS STAGGER =====
+    const solTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#solution',
+        start: 'top 70%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    solTl
+      .from('#solutionHeadline', { opacity: 0, y: 60, duration: 0.7, ease: 'power3.out' })
+      .from('#solutionSub', { opacity: 0, y: 30, duration: 0.6, ease: 'power3.out' }, '-=0.3');
+
+    // Feature cards with stagger and 3D tilt entrance
+    const featureCards = gsap.utils.toArray('.feature-card');
+    featureCards.forEach((card, i) => {
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: i * 0.15,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+          onEnter: () => card.classList.add('visible'),
+        }
+      });
+    });
+
+    // Card mouse glow effect
+    featureCards.forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', x + '%');
+        card.style.setProperty('--mouse-y', y + '%');
+      });
+    });
+
+    // ===== PHILOSOPHY: COLUMNS SLIDE IN FROM SIDES =====
+    gsap.from('#philHeadline', {
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#philHeadline',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    gsap.to('#philLeft', {
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.philosophy-columns',
+        start: 'top 75%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    gsap.from('#philLeft', {
+      x: -80,
+      duration: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.philosophy-columns',
+        start: 'top 75%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    gsap.to('#philRight', {
+      opacity: 1,
+      duration: 0.8,
+      delay: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.philosophy-columns',
+        start: 'top 75%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    gsap.from('#philRight', {
+      x: 80,
+      duration: 0.9,
+      delay: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.philosophy-columns',
+        start: 'top 75%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // ===== WAITLIST: SCALE-UP ENTRANCE =====
+    const waitTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#waitlist',
+        start: 'top 70%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    waitTl
+      .from('#waitlistHeadline', { opacity: 0, y: 60, scale: 0.9, duration: 0.8, ease: 'power3.out' })
+      .from('#waitlistSub', { opacity: 0, y: 30, duration: 0.6, ease: 'power3.out' }, '-=0.3')
+      .from('#waitlistForm', { opacity: 0, y: 40, duration: 0.7, ease: 'power3.out' }, '-=0.2')
+      .from('#waitlistNote', { opacity: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2');
+
+    // ===== ORB PARALLAX (ALL SECTIONS) =====
+    document.querySelectorAll('.orb-field').forEach(field => {
+      const orbs = field.querySelectorAll('.orb');
+      orbs.forEach((orb, i) => {
+        // Continuous subtle float
+        gsap.to(orb, {
+          x: `+=${30 + i * 15}`,
+          y: `+=${20 + i * 10}`,
+          duration: 6 + i * 2,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1
+        });
+
+        // Parallax on scroll
+        gsap.to(orb, {
+          yPercent: -20 - (i * 10),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: field.parentElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        });
+      });
+    });
+
+    // ===== PARALLAX: SECTION TRANSITIONS =====
+    // Subtle zoom effect on dark sections as you scroll through
+    ['#solution', '#waitlist'].forEach(sel => {
+      gsap.from(sel + ' .section-inner', {
+        scale: 0.92,
+        opacity: 0.5,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sel,
+          start: 'top bottom',
+          end: 'top 20%',
+          scrub: 1
+        }
+      });
+    });
+
+    // ===== MAGNETIC CURSOR EFFECT ON BUTTONS (DESKTOP) =====
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.btn-primary').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          gsap.to(btn, {
+            x: x * 0.15,
+            y: y * 0.15,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
