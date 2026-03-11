@@ -258,38 +258,27 @@
       position: absolute;
       left: 0;
       right: 0;
-      height: 300px;
+      height: 250px;
       z-index: 20;
       pointer-events: none;
-      background: #F5F5F7;
+      background:
+        radial-gradient(closest-side, #888, #fff) 0 / 8px 8px space,
+        linear-gradient(to bottom, #888, #fff);
+      background-blend-mode: multiply;
+      filter: contrast(30);
     }
 
     .problem-halftone-top {
-      top: -200px;
-      -webkit-mask-image:
-        linear-gradient(to bottom, transparent 0%, black 100%),
-        radial-gradient(circle, black 1.2px, transparent 1.2px);
-      -webkit-mask-size: 100% 100%, 7px 7px;
-      -webkit-mask-composite: source-in;
-      mask-image:
-        linear-gradient(to bottom, transparent 0%, black 100%),
-        radial-gradient(circle, black 1.2px, transparent 1.2px);
-      mask-size: 100% 100%, 7px 7px;
-      mask-composite: intersect;
+      top: -150px;
     }
 
     .problem-halftone-bottom {
-      bottom: -200px;
-      -webkit-mask-image:
-        linear-gradient(to top, transparent 0%, black 100%),
-        radial-gradient(circle, black 1.2px, transparent 1.2px);
-      -webkit-mask-size: 100% 100%, 7px 7px;
-      -webkit-mask-composite: source-in;
-      mask-image:
-        linear-gradient(to top, transparent 0%, black 100%),
-        radial-gradient(circle, black 1.2px, transparent 1.2px);
-      mask-size: 100% 100%, 7px 7px;
-      mask-composite: intersect;
+      bottom: -150px;
+      background:
+        radial-gradient(closest-side, #888, #fff) 0 / 8px 8px space,
+        linear-gradient(to top, #888, #fff);
+      background-blend-mode: multiply;
+      filter: contrast(30);
     }
 
     .problem-headline {
