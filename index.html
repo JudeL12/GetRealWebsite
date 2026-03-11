@@ -245,7 +245,13 @@
 
     /* ===================== PROBLEM ===================== */
     #problem {
-      background: #F5F5F7;
+      background: radial-gradient(ellipse 80% 70% at 50% 50%,
+        #F5F5F7 0%,
+        #F5F5F7 40%,
+        rgba(245, 245, 247, 0.6) 60%,
+        rgba(245, 245, 247, 0.2) 75%,
+        transparent 100%
+      ), #1A1A2E;
       color: #1A1A2E;
       display: flex;
       align-items: center;
