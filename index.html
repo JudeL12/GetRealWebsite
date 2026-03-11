@@ -422,12 +422,14 @@
 
     /* ===================== PHILOSOPHY ===================== */
     #philosophy {
-      background: #1A1A2E;
+      background: #141428;
       color: #FFFFFF;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .philosophy-headline {
@@ -515,19 +517,12 @@
     /* ===================== SECTION TRANSITION OVERLAYS ===================== */
     .section-wipe {
       position: absolute;
+      bottom: 0;
       left: 0;
       right: 0;
-      height: 400px;
+      height: 200px;
       z-index: 3;
       pointer-events: none;
-    }
-
-    .section-wipe-bottom {
-      bottom: 0;
-    }
-
-    .section-wipe-top {
-      top: 0;
     }
 
     .wipe-dark-to-light {
@@ -536,14 +531,6 @@
 
     .wipe-light-to-dark {
       background: linear-gradient(to bottom, transparent, #1A1A2E);
-    }
-
-    .wipe-light-from-dark {
-      background: linear-gradient(to bottom, #1A1A2E, transparent);
-    }
-
-    .wipe-dark-from-light {
-      background: linear-gradient(to bottom, #F5F5F7, transparent);
     }
 
     /* ===================== FOOTER ===================== */
@@ -660,12 +647,11 @@
       <div class="scroll-line"></div>
       <span class="scroll-text">Scroll</span>
     </div>
-    <div class="section-wipe section-wipe-bottom wipe-dark-to-light"></div>
+    <div class="section-wipe wipe-dark-to-light"></div>
   </section>
 
   <!-- ==================== PROBLEM ==================== -->
   <section class="section" id="problem">
-    <div class="section-wipe section-wipe-top wipe-light-from-dark"></div>
     <div class="section-inner">
       <h2 class="problem-headline" id="problemHeadline">The system is broken.</h2>
       <div class="stats-grid" id="statsGrid">
@@ -686,12 +672,11 @@
         Budgeting apps solve the wrong problem. They track what already happened. Nothing intervenes at the moment you're about to make the wrong call. People don't need another spreadsheet. They need something that shows up when it matters.
       </p>
     </div>
-    <div class="section-wipe section-wipe-bottom wipe-light-to-dark"></div>
+    <div class="section-wipe wipe-light-to-dark"></div>
   </section>
 
   <!-- ==================== SOLUTION ==================== -->
   <section class="section" id="solution">
-    <div class="section-wipe section-wipe-top wipe-dark-from-light"></div>
     <div class="orb-field">
       <div class="orb orb--orange" style="width:500px;height:500px;bottom:-100px;right:-80px;"></div>
       <div class="orb orb--red" style="width:300px;height:300px;top:20%;left:-50px;"></div>
