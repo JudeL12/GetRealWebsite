@@ -520,17 +520,40 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 200px;
+      height: 45vh;
       z-index: 3;
       pointer-events: none;
     }
 
     .wipe-dark-to-light {
-      background: linear-gradient(to bottom, transparent, #F5F5F7);
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(245, 245, 247, 0.05) 20%,
+        rgba(245, 245, 247, 0.2) 40%,
+        rgba(245, 245, 247, 0.5) 60%,
+        rgba(245, 245, 247, 0.8) 80%,
+        #F5F5F7 100%
+      );
     }
 
     .wipe-light-to-dark {
-      background: linear-gradient(to bottom, transparent, #1A1A2E);
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(26, 26, 46, 0.05) 20%,
+        rgba(26, 26, 46, 0.2) 40%,
+        rgba(26, 26, 46, 0.5) 60%,
+        rgba(26, 26, 46, 0.8) 80%,
+        #1A1A2E 100%
+      );
+    }
+
+    .wipe-dark-to-darker {
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(20, 20, 40, 0.3) 40%,
+        rgba(20, 20, 40, 0.7) 70%,
+        #141428 100%
+      );
     }
 
     /* ===================== FOOTER ===================== */
@@ -703,6 +726,7 @@
         </div>
       </div>
     </div>
+    <div class="section-wipe wipe-dark-to-darker"></div>
   </section>
 
   <!-- ==================== BUILT DIFFERENT ==================== -->
