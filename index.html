@@ -250,31 +250,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    #problem::before,
-    #problem::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 160px;
-      z-index: 1;
-      pointer-events: none;
-      background-image: radial-gradient(circle, #1A1A2E 1.2px, transparent 1.2px);
-      background-size: 7px 7px;
-    }
-
-    #problem::before {
-      top: 0;
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
-      mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
-    }
-
-    #problem::after {
-      bottom: 0;
-      -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
-      mask-image: linear-gradient(to top, black 0%, transparent 100%);
+      z-index: 2;
     }
 
     .problem-halftone-top,
@@ -282,25 +258,38 @@
       position: absolute;
       left: 0;
       right: 0;
-      height: 160px;
+      height: 300px;
       z-index: 20;
       pointer-events: none;
+      background: #F5F5F7;
     }
 
     .problem-halftone-top {
-      top: -160px;
-      background-image: radial-gradient(circle, #F5F5F7 1.2px, transparent 1.2px);
-      background-size: 7px 7px;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
-      mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+      top: -200px;
+      -webkit-mask-image:
+        linear-gradient(to bottom, transparent 0%, black 100%),
+        radial-gradient(circle, black 1.2px, transparent 1.2px);
+      -webkit-mask-size: 100% 100%, 7px 7px;
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(to bottom, transparent 0%, black 100%),
+        radial-gradient(circle, black 1.2px, transparent 1.2px);
+      mask-size: 100% 100%, 7px 7px;
+      mask-composite: intersect;
     }
 
     .problem-halftone-bottom {
-      bottom: -160px;
-      background-image: radial-gradient(circle, #F5F5F7 1.2px, transparent 1.2px);
-      background-size: 7px 7px;
-      -webkit-mask-image: linear-gradient(to top, transparent 0%, black 100%);
-      mask-image: linear-gradient(to top, transparent 0%, black 100%);
+      bottom: -200px;
+      -webkit-mask-image:
+        linear-gradient(to top, transparent 0%, black 100%),
+        radial-gradient(circle, black 1.2px, transparent 1.2px);
+      -webkit-mask-size: 100% 100%, 7px 7px;
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(to top, transparent 0%, black 100%),
+        radial-gradient(circle, black 1.2px, transparent 1.2px);
+      mask-size: 100% 100%, 7px 7px;
+      mask-composite: intersect;
     }
 
     .problem-headline {
