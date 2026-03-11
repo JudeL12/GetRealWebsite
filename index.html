@@ -245,28 +245,64 @@
 
     /* ===================== PROBLEM ===================== */
     #problem {
-      background: linear-gradient(to bottom,
-        #1A1A2E 0%,
-        #3a3a50 3%,
-        #7a7a8a 5%,
-        #b8b8be 8%,
-        #d9d9dd 10%,
-        #eaeaed 12%,
-        #f1f1f4 14%,
-        #F5F5F7 16%,
-        #F5F5F7 84%,
-        #f1f1f4 86%,
-        #eaeaed 88%,
-        #d9d9dd 90%,
-        #b8b8be 92%,
-        #7a7a8a 95%,
-        #3a3a50 97%,
-        #1A1A2E 100%
-      );
+      background: #F5F5F7;
       color: #1A1A2E;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    #problem::before,
+    #problem::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 120px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #problem::before {
+      top: 0;
+      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
+      background-size: 6px 6px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black);
+      mask-image: linear-gradient(to bottom, transparent, black);
+    }
+
+    #problem::after {
+      bottom: 0;
+      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
+      background-size: 6px 6px;
+      -webkit-mask-image: linear-gradient(to top, transparent, black);
+      mask-image: linear-gradient(to top, transparent, black);
+    }
+
+    .problem-halftone-top,
+    .problem-halftone-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 120px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .problem-halftone-top {
+      top: -120px;
+      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
+      background-size: 6px 6px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black);
+      mask-image: linear-gradient(to bottom, transparent, black);
+    }
+
+    .problem-halftone-bottom {
+      bottom: -120px;
+      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
+      background-size: 6px 6px;
+      -webkit-mask-image: linear-gradient(to top, transparent, black);
+      mask-image: linear-gradient(to top, transparent, black);
     }
 
     .problem-headline {
@@ -652,6 +688,8 @@
 
   <!-- ==================== PROBLEM ==================== -->
   <section class="section" id="problem">
+    <div class="problem-halftone-top"></div>
+    <div class="problem-halftone-bottom"></div>
     <div class="section-inner">
       <h2 class="problem-headline" id="problemHeadline">The system is broken.</h2>
       <div class="stats-grid" id="statsGrid">
