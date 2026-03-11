@@ -745,24 +745,10 @@
         e.preventDefault();
         const target = document.querySelector(anchor.getAttribute('href'));
         if (target) {
-          gsap.to(window, {
-            scrollTo: { y: target, autoKill: false },
-            duration: 1.2,
-            ease: "power3.inOut"
-          });
+          target.scrollIntoView({ behavior: 'smooth' });
         }
       });
     });
-
-    // Fallback: native smooth scroll if GSAP ScrollTo not loaded
-    if (!gsap.plugins || !gsap.plugins.scrollTo) {
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', e => {
-          e.preventDefault();
-          document.querySelector(anchor.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
-        });
-      });
-    }
 
     // ===== NEWSLETTER SUCCESS CHECK =====
     if (window.location.search.includes('subscribed=1')) {
