@@ -258,25 +258,23 @@
       position: absolute;
       left: 0;
       right: 0;
-      height: 120px;
+      height: 160px;
       z-index: 1;
       pointer-events: none;
+      background-image: radial-gradient(circle, #1A1A2E 1.2px, transparent 1.2px);
+      background-size: 7px 7px;
     }
 
     #problem::before {
       top: 0;
-      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
-      background-size: 6px 6px;
-      -webkit-mask-image: linear-gradient(to bottom, transparent, black);
-      mask-image: linear-gradient(to bottom, transparent, black);
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
     }
 
     #problem::after {
       bottom: 0;
-      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
-      background-size: 6px 6px;
-      -webkit-mask-image: linear-gradient(to top, transparent, black);
-      mask-image: linear-gradient(to top, transparent, black);
+      -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+      mask-image: linear-gradient(to top, black 0%, transparent 100%);
     }
 
     .problem-halftone-top,
@@ -284,25 +282,25 @@
       position: absolute;
       left: 0;
       right: 0;
-      height: 120px;
-      z-index: 0;
+      height: 160px;
+      z-index: 20;
       pointer-events: none;
     }
 
     .problem-halftone-top {
-      top: -120px;
-      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
-      background-size: 6px 6px;
-      -webkit-mask-image: linear-gradient(to bottom, transparent, black);
-      mask-image: linear-gradient(to bottom, transparent, black);
+      top: -160px;
+      background-image: radial-gradient(circle, #F5F5F7 1.2px, transparent 1.2px);
+      background-size: 7px 7px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
     }
 
     .problem-halftone-bottom {
-      bottom: -120px;
-      background-image: radial-gradient(circle, #F5F5F7 1px, transparent 1px);
-      background-size: 6px 6px;
-      -webkit-mask-image: linear-gradient(to top, transparent, black);
-      mask-image: linear-gradient(to top, transparent, black);
+      bottom: -160px;
+      background-image: radial-gradient(circle, #F5F5F7 1.2px, transparent 1.2px);
+      background-size: 7px 7px;
+      -webkit-mask-image: linear-gradient(to top, transparent 0%, black 100%);
+      mask-image: linear-gradient(to top, transparent 0%, black 100%);
     }
 
     .problem-headline {
