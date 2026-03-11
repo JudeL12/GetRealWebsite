@@ -245,7 +245,14 @@
 
     /* ===================== PROBLEM ===================== */
     #problem {
-      background: #F5F5F7;
+      background: linear-gradient(to bottom,
+        #1A1A2E 0%,
+        #1A1A2E 2%,
+        #F5F5F7 15%,
+        #F5F5F7 85%,
+        #1A1A2E 98%,
+        #1A1A2E 100%
+      );
       color: #1A1A2E;
       display: flex;
       align-items: center;
@@ -253,33 +260,6 @@
       z-index: 2;
     }
 
-    .problem-halftone-top,
-    .problem-halftone-bottom {
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 250px;
-      z-index: 20;
-      pointer-events: none;
-      background:
-        radial-gradient(closest-side, #888, #fff) 0 / 8px 8px space,
-        linear-gradient(to bottom, #888, #fff);
-      background-blend-mode: multiply;
-      filter: contrast(30);
-    }
-
-    .problem-halftone-top {
-      top: -150px;
-    }
-
-    .problem-halftone-bottom {
-      bottom: -150px;
-      background:
-        radial-gradient(closest-side, #888, #fff) 0 / 8px 8px space,
-        linear-gradient(to top, #888, #fff);
-      background-blend-mode: multiply;
-      filter: contrast(30);
-    }
 
     .problem-headline {
       font-size: clamp(2.8rem, 6vw, 5rem);
@@ -664,8 +644,6 @@
 
   <!-- ==================== PROBLEM ==================== -->
   <section class="section" id="problem">
-    <div class="problem-halftone-top"></div>
-    <div class="problem-halftone-bottom"></div>
     <div class="section-inner">
       <h2 class="problem-headline" id="problemHeadline">The system is broken.</h2>
       <div class="stats-grid" id="statsGrid">
