@@ -427,6 +427,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: auto;
     }
 
     .philosophy-headline {
@@ -440,7 +441,7 @@
       margin: 0 auto;
       font-size: clamp(1.05rem, 1.5vw, 1.25rem);
       line-height: 1.8;
-      color: #444;
+      color: #333;
       opacity: 0;
     }
 
@@ -517,7 +518,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 200px;
+      height: 300px;
       z-index: 3;
       pointer-events: none;
     }
@@ -704,8 +705,8 @@
   </section>
 
   <!-- ==================== BUILT DIFFERENT ==================== -->
-  <section class="section" id="built-different">
-    <div class="section-inner" style="text-align: center;">
+  <section class="section" id="built-different" style="min-height: auto;">
+    <div class="section-inner" style="text-align: center; padding: 120px 24px;">
       <h2 class="philosophy-headline" id="builtHeadline">Built different.</h2>
       <p class="built-body" id="builtBody">Free for users. No subscription. No paywall. We earn interchange on card spending and partner referrals. Our incentives are aligned: we only win when you recover.</p>
     </div>
