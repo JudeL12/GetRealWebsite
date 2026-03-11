@@ -86,7 +86,6 @@
     .section {
       min-height: 100vh;
       position: relative;
-      overflow: hidden;
     }
 
     .section-inner {
@@ -246,7 +245,12 @@
 
     /* ===================== PROBLEM ===================== */
     #problem {
-      background: #F5F5F7;
+      background: linear-gradient(to bottom,
+        #1A1A2E 0%,
+        #F5F5F7 12%,
+        #F5F5F7 88%,
+        #1A1A2E 100%
+      );
       color: #1A1A2E;
       display: flex;
       align-items: center;
@@ -422,7 +426,7 @@
 
     /* ===================== PHILOSOPHY ===================== */
     #philosophy {
-      background: #141428;
+      background: #0E0E1E;
       color: #FFFFFF;
       display: flex;
       align-items: center;
@@ -512,48 +516,6 @@
     @keyframes pulse {
       0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4); }
       50% { box-shadow: 0 0 0 16px rgba(255, 107, 53, 0); }
-    }
-
-    /* ===================== SECTION TRANSITION OVERLAYS ===================== */
-    .section-wipe {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 45vh;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .wipe-dark-to-light {
-      background: linear-gradient(to bottom,
-        transparent 0%,
-        rgba(245, 245, 247, 0.05) 20%,
-        rgba(245, 245, 247, 0.2) 40%,
-        rgba(245, 245, 247, 0.5) 60%,
-        rgba(245, 245, 247, 0.8) 80%,
-        #F5F5F7 100%
-      );
-    }
-
-    .wipe-light-to-dark {
-      background: linear-gradient(to bottom,
-        transparent 0%,
-        rgba(26, 26, 46, 0.05) 20%,
-        rgba(26, 26, 46, 0.2) 40%,
-        rgba(26, 26, 46, 0.5) 60%,
-        rgba(26, 26, 46, 0.8) 80%,
-        #1A1A2E 100%
-      );
-    }
-
-    .wipe-dark-to-darker {
-      background: linear-gradient(to bottom,
-        transparent 0%,
-        rgba(20, 20, 40, 0.3) 40%,
-        rgba(20, 20, 40, 0.7) 70%,
-        #141428 100%
-      );
     }
 
     /* ===================== FOOTER ===================== */
@@ -670,7 +632,6 @@
       <div class="scroll-line"></div>
       <span class="scroll-text">Scroll</span>
     </div>
-    <div class="section-wipe wipe-dark-to-light"></div>
   </section>
 
   <!-- ==================== PROBLEM ==================== -->
@@ -695,7 +656,6 @@
         Budgeting apps solve the wrong problem. They track what already happened. Nothing intervenes at the moment you're about to make the wrong call. People don't need another spreadsheet. They need something that shows up when it matters.
       </p>
     </div>
-    <div class="section-wipe wipe-light-to-dark"></div>
   </section>
 
   <!-- ==================== SOLUTION ==================== -->
@@ -726,7 +686,6 @@
         </div>
       </div>
     </div>
-    <div class="section-wipe wipe-dark-to-darker"></div>
   </section>
 
   <!-- ==================== BUILT DIFFERENT ==================== -->
