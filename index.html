@@ -1186,7 +1186,7 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
       <div class="next-lw">
         <span class="next-rail" aria-hidden="true"><i></i></span>
         <ol class="next-list">
-          <li data-r><h3>A card that runs your plan.</h3> <p>Through a partner bank: bills set aside automatically on payday, extra money sent to your debt, and a balance that shows what's actually safe to spend, not just what's in the account.</p></li>
+          <li data-r><h3>A card that runs your plan.</h3> <p>Through a partner bank: bills set aside automatically on payday, extra money sent to your debt, spending controls that help you stick to your plan, and a balance that shows what's actually safe to spend, not just what's in the account.</p></li>
           <li data-r><h3>Real quotes, right in the app.</h3> <p>Insurance and loan offers from licensed partners, without filling out forms on five different sites.</p></li>
           <li data-r><h3>Alerts at the right moment.</h3> <p>A heads-up before a bill can't be covered or a budget runs out, not after.</p></li>
           <li data-r><h3>Accounts for families.</h3> <p>Teen accounts with parent controls, so kids learn money with real numbers before it costs them anything.</p></li>
@@ -1591,8 +1591,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (hasSplit) gsap.registerPlugin(SplitText);
   ScrollTrigger.config({ ignoreMobileResize: true });
 
-  /* Lenis smooth scroll */
-  if (window.Lenis) {
+  /* Lenis smooth scroll. Not in Firefox: there it moves scrolling onto the main thread and
+     drops most frames on fast monitors, while Firefox's own smooth scrolling is already silky. */
+  if (window.Lenis && !/firefox\//i.test(navigator.userAgent)) {
     try {
       var lenis = new Lenis({ lerp: 0.12, smoothWheel: true });
       lenis.on('scroll', ScrollTrigger.update);
