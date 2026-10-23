@@ -38,6 +38,8 @@
     var d = document.documentElement;
     d.classList.add('js');
     try { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('rm'); } catch (e) {}
+    // Lite mode was switched on earlier this visit (see the frame-rate check): start static.
+    try { if (sessionStorage.getItem('gr-lite') === '1') { d.classList.add('rm'); d.classList.add('lite'); } } catch (e) {}
     // Failsafe: if the animation engine hasn't started in time, show the hero as-is.
     setTimeout(function () { if (!d.classList.contains('anim-ok')) d.classList.add('revealed'); }, 3000);
   })();
@@ -789,10 +791,30 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
    that (and stays clear of the rounded top), which keeps it a cheap solid-colour layer. */
 .fx-dim { top: auto; bottom: 0; height: min(calc(100% - var(--sheet)), 100vh); z-index: 60; background: var(--ink); opacity: 0; will-change: opacity; }
 
-.fx-lean { will-change: transform; }
+.fx-lean { will-change: transform; } /* headings that lean with scroll speed: own layer, no repaint */
 /* Scroll-linked glows keep their own layer for good: moving them never repaints, and GSAP's 2D/3D
    switch at the ends of a scrub doesn't rebuild a large blurred layer. */
-.horizon, .aurora, .money-orb, .wl-glow, .ftr-word { will-change: transform; } /* headings that lean with scroll speed: own layer, no repaint */
+.horizon, .aurora, .money-orb, .wl-glow, .ftr-word { will-change: transform; }
+
+/* ---------- Lite mode ----------
+   Set when this browser can't draw the page smoothly (measured after load; e.g. Firefox or
+   Chrome with hardware acceleration off, where every frame is drawn on the CPU). Same layout
+   and content, but static: no motion, blur, big shadows, grain, 3D or animated hero.
+   !important because it also has to override inline styles left by animations. */
+html.lite *, html.lite *::before, html.lite *::after {
+  animation: none !important; transition: none !important; filter: none !important; box-shadow: none !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important; will-change: auto !important; }
+html.lite .grain, html.lite .hero-gl, html.lite .aurora, html.lite .fx-cursor, html.lite .fx-glare,
+html.lite .wl-trace, html.lite .wl-ring, html.lite .wl-glow, html.lite .phone-scroll::before, html.lite .phone-scroll::after { display: none !important; }
+html.lite .hero { background: radial-gradient(70% 60% at 50% 0%, rgba(255, 107, 53, .16), transparent 70%), var(--ink); }
+html.lite .hero-stage, html.lite .card-stage { perspective: none !important; }
+html.lite .phone-intro, html.lite .phone-scroll, html.lite .phone-tilt, html.lite .gcard, html.lite .gcard *, html.lite .safe,
+html.lite .horizon, html.lite .money-orb, html.lite .ftr-word, html.lite .fx-bg, html.lite .fx-under, html.lite .h2 { transform: none !important; transform-style: flat !important; }
+html.lite [data-r], html.lite [data-tile], html.lite [data-hero], html.lite .hero-title, html.lite .hero-title *,
+html.lite [data-split] *, html.lite .big-para * { opacity: 1 !important; translate: none !important; transform: none !important; }
+html.lite .fx-dim { opacity: 0 !important; }
+html.lite .hdr-bar { background: rgba(14, 14, 30, .97); }
+html.lite .hdr.on-light .hdr-bar { background: rgba(255, 255, 255, .97); }
 
 /* Stats: odometer columns (built by JS, removed again when the roll ends) */
 .stat-num > [data-count] { display: inline-block; height: .9em; vertical-align: top; } /* same box before, during and after the roll */
@@ -1321,8 +1343,8 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js" defer></script>
-<script src="/assets/fx/hero-gl.js?v=2" defer></script>
-<script src="/assets/fx/fx.js?v=2" defer></script>
+<script src="/assets/fx/hero-gl.js?v=4" defer></script>
+<script src="/assets/fx/fx.js?v=4" defer></script>
 <script>
 /* Core behaviour: runs immediately, never waits on the CDN. */
 (function () {
@@ -1564,6 +1586,7 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
   if (fine) {
     $$('[data-tile]').forEach(function (t) {
       t.addEventListener('pointermove', function (e) {
+        if (root.classList.contains('lite')) return;
         var r = t.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
         t.style.setProperty('--mx', (x * 100) + '%'); t.style.setProperty('--my', (y * 100) + '%');
         if (!reduce) t.style.transform = 'rotateX(' + ((0.5 - y) * 4).toFixed(2) + 'deg) rotateY(' + ((x - 0.5) * 5).toFixed(2) + 'deg)';
@@ -1655,6 +1678,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var ry = gsap.quickTo(tilt, 'rotationY', { duration: 0.9, ease: 'power3' });
       var ox = gsap.quickTo(cg, 'x', { duration: 1, ease: 'power3' }), oy = gsap.quickTo(cg, 'y', { duration: 1, ease: 'power3' });
       hero.addEventListener('pointermove', function (e) {
+        if (root.classList.contains('lite')) return;
         var r = hero.getBoundingClientRect();
         var nx = (e.clientX - r.left) / r.width - 0.5, ny = (e.clientY - r.top) / window.innerHeight - 0.5;
         ry(nx * 14); rx(-ny * 8); ox(e.clientX - r.left); oy(e.clientY - r.top);
@@ -1710,6 +1734,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var lx = gsap.quickTo(label, 'x', { duration: 0.6, ease: 'power3' }), ly = gsap.quickTo(label, 'y', { duration: 0.6, ease: 'power3' });
         var wide = b.offsetWidth > 320;
         b.addEventListener('pointermove', function (e) {
+          if (root.classList.contains('lite')) return;
           var r = b.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
           var k = wide ? 0.06 : 0.25;
           bx(dx * k); by(dy * 0.32); lx(dx * k * 0.45); ly(dy * 0.14);
@@ -1740,6 +1765,57 @@ document.addEventListener('DOMContentLoaded', function () {
   function go() { if (!started) { started = true; safeStart(); } }
   if (document.fonts && document.fonts.ready) { document.fonts.ready.then(go); setTimeout(go, 2500); } else { go(); }
 });
+</script>
+<script>
+/* ---------- Lite mode check ----------
+   Browsers don't say whether hardware acceleration is on, so we measure how long frames take.
+   Normal setups draw a frame in 7-17ms; with acceleration off (everything drawn on the CPU)
+   it took 150-800ms on a large screen. If the median frame in a window is over 45ms
+   (under ~22fps), switch to lite mode: static, like reduced motion (see "Lite mode" in the CSS),
+   and remember it for the rest of the visit. */
+(function () {
+  var root = document.documentElement;
+  if (root.classList.contains('rm')) return; // already static (reduced motion, or lite earlier this visit)
+  // Frames are timed in 1.5s windows: several in a row after load (the heavy intro may start a
+  // moment later), then one during each of the first few scrolls. Any slow window switches.
+  var t = [], last = 0, start = 0, busy = false, lite = false, loadWindows = 5, scrollWindows = 3;
+  function reset() { t = []; last = 0; start = 0; }
+  document.addEventListener('visibilitychange', reset); // a hidden tab pauses frames: start over when it's back
+  function sample(next) {
+    if (busy || lite) return;
+    busy = true; reset();
+    requestAnimationFrame(function frame(ts) {
+      if (lite) return;
+      if (document.hidden) { reset(); requestAnimationFrame(frame); return; }
+      if (last) t.push(ts - last);
+      last = ts; if (!start) start = ts;
+      if (ts - start < 1500 && t.length < 120) { requestAnimationFrame(frame); return; }
+      busy = false;
+      t.sort(function (a, b) { return a - b; });
+      if (t.length >= 3 && t[t.length >> 1] > 45) { goLite(); return; }
+      if (next) next();
+    });
+  }
+  function afterLoad() { if (--loadWindows >= 0) sample(afterLoad); }
+  function onScroll() {
+    if (lite || scrollWindows <= 0) { window.removeEventListener('scroll', onScroll); return; }
+    if (!busy) { scrollWindows--; sample(); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  function goLite() {
+    lite = true; busy = false;
+    try { sessionStorage.setItem('gr-lite', '1'); } catch (e) {}
+    root.classList.add('lite', 'rm', 'revealed');
+    root.classList.remove('sc-ready', 'fx-sheets'); // the showcase stacks as on phones; plain section backgrounds
+    var GR = window.GR || {};
+    if (GR.lenis) { try { GR.lenis.destroy(); } catch (e) {} GR.lenis = null; }
+    if (window.ScrollTrigger) ScrollTrigger.getAll().forEach(function (s) { s.kill(true); });
+    if (window.gsap) gsap.globalTimeline.getChildren(true, true, false).forEach(function (tw) { tw.progress(1); });
+    document.dispatchEvent(new CustomEvent('gr:lite')); // hero shader and effects stop their loops
+  }
+  function begin() { setTimeout(afterLoad, 400); }
+  if (document.readyState === 'complete') begin(); else window.addEventListener('load', begin);
+})();
 </script>
 </body>
 </html>

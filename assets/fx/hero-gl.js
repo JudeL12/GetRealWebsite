@@ -187,5 +187,6 @@
   }
   document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); else play(); });
   canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); kill(); });
+  document.addEventListener('gr:lite', kill); // lite mode (slow drawing): drop the shader for good
   play();
 })();

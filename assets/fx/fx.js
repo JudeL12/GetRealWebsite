@@ -22,6 +22,9 @@
   'use strict';
   var root = document.documentElement;
   var reduce = root.classList.contains('rm');
+  // Lite mode (index.html switches it on when the browser draws too slowly): every handler below stops.
+  var lite = false;
+  document.addEventListener('gr:lite', function () { lite = true; });
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -65,6 +68,7 @@
     }
     function ease(p) { return 1 - (1 - p) * (1 - p); }
     function update() {
+      if (lite) return;
       var y = window.scrollY, vh = window.innerHeight;
       for (var i = 0; i < items.length; i++) {
         var it = items[i];
@@ -122,7 +126,7 @@
     }
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
     document.addEventListener('pointermove', function (e) {
-      if (e.pointerType !== 'mouse') return;
+      if (lite || e.pointerType !== 'mouse') return;
       px = e.clientX; py = e.clientY;
       if (x < -50) { x = px; y = py; }
       c.classList.add('on'); kick();
@@ -163,6 +167,7 @@
       var art = $('.tile-art', t);
       if (!art) return;
       t.addEventListener('pointermove', function (e) {
+        if (lite) return;
         var r = t.getBoundingClientRect(), nx = (e.clientX - r.left) / r.width - 0.5, ny = (e.clientY - r.top) / r.height - 0.5;
         art.style.transform = 'translate3d(' + (-nx * 14).toFixed(1) + 'px,' + (-ny * 10).toFixed(1) + 'px,0)';
       });
@@ -181,6 +186,7 @@
     var g = mk('fx-glare', 'i');
     phone.appendChild(g);
     hero.addEventListener('pointermove', function (e) {
+      if (lite) return;
       var r = hero.getBoundingClientRect();
       g.style.setProperty('--gx', (((e.clientX - r.left) / r.width - 0.5) * 2).toFixed(3));
     }, { passive: true });
@@ -278,6 +284,7 @@
         } else html += '<span class="odo-c">' + node.outerHTML + '</span>';
       });
       el.innerHTML = html;
+      document.addEventListener('gr:lite', function () { el.innerHTML = orig; }); // lite mode: back to the plain number
       var strips = $$('.odo > span', el);
       ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: function () {
         var tl = gsap.timeline({ onComplete: function () { el.innerHTML = orig; } });
@@ -300,6 +307,7 @@
         gsap.set(stage, { transformPerspective: 1400 });
         var layers = [[$('.gc-top', gc), 8], [$('.gc-chip', gc), 14], [$('.gc-bot', gc), 5]];
         col.addEventListener('pointermove', function (e) {
+          if (lite) return;
           var r = stage.getBoundingClientRect(), nx = clamp((e.clientX - r.left) / r.width - 0.5, -1, 1), ny = clamp((e.clientY - r.top) / r.height - 0.5, -1, 1);
           ry(nx * 10); rx(-ny * 8);
           gc.style.setProperty('--hx', (nx + 0.5).toFixed(3)); gc.style.setProperty('--hy', (ny + 0.5).toFixed(3));
