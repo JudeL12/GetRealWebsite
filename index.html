@@ -119,8 +119,8 @@ p { margin: 0; }
 .hdr-bar {
   pointer-events: auto; max-width: 1180px; margin: 0 auto; height: 58px;
   display: flex; align-items: center; gap: 12px; padding: 0 8px 0 20px;
-  background: rgba(14, 14, 30, .72); border: 1px solid rgba(255, 255, 255, .09);
-  -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
+  background: rgba(14, 14, 30, .78); border: 1px solid rgba(255, 255, 255, .09);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4); backdrop-filter: blur(12px) saturate(1.4);
   border-radius: 999px; box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .45);
   color: var(--text-d); transition: background .45s, border-color .45s, color .45s, box-shadow .45s;
 }
@@ -274,8 +274,16 @@ section[id] { scroll-margin-top: 0; }
 .phone {
   position: relative; width: 340px; border-radius: 58px; padding: 11px;
   background: linear-gradient(145deg, #3a3a4e, #121220 40%, #26263a);
-  box-shadow: 0 0 0 1.5px #4a4a60 inset, 0 0 0 1px rgba(0, 0, 0, .6), 0 60px 120px -30px rgba(0, 0, 0, .85), 0 30px 90px -36px rgba(255, 107, 53, .75), 0 0 140px -40px rgba(255, 150, 100, .45);
+  box-shadow: 0 0 0 1.5px #4a4a60 inset, 0 0 0 1px rgba(0, 0, 0, .6);
 }
+/* The phone's drop shadow and orange halo, drawn as soft gradients behind it. (As big blurred
+   box-shadows inside the tilting 3D phone they were redrawn every frame: the main cause of
+   lag in the hero on fast monitors.) */
+.phone-scroll::before, .phone-scroll::after { content: ""; position: absolute; left: 50%; border-radius: 50%; pointer-events: none; }
+.phone-scroll::before { top: 46%; width: 190%; height: 92%; transform: translate(-50%, -50%) translateZ(-60px);
+  background: radial-gradient(closest-side, rgba(255, 120, 70, .34), rgba(255, 107, 53, .12) 55%, transparent 78%); }
+.phone-scroll::after { top: 58%; width: 125%; height: 96%; transform: translate(-50%, -50%) translateZ(-30px);
+  background: radial-gradient(closest-side, rgba(0, 0, 0, .62), rgba(0, 0, 0, .25) 55%, transparent 80%); }
 .phone::before { content: ""; position: absolute; right: -3px; top: 150px; width: 3px; height: 70px; border-radius: 0 3px 3px 0; background: #2c2c40; }
 /* Real app screenshot (1170x2532) fills the screen exactly */
 .screen { position: relative; aspect-ratio: 1560 / 3376; border-radius: 48px; overflow: hidden; background: #FFF8F4; isolation: isolate; }
@@ -283,8 +291,8 @@ section[id] { scroll-margin-top: 0; }
 .screen::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 1px rgba(0, 0, 0, .22) inset; pointer-events: none; }
 .chip {
   position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 14px 10px 10px; border-radius: 16px; white-space: nowrap; text-align: left;
-  background: rgba(26, 26, 46, .78); border: 1px solid rgba(255, 255, 255, .12); color: var(--text-d); font-size: 13px; line-height: 1.25;
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .7);
+  background: rgba(26, 26, 46, .92); border: 1px solid rgba(255, 255, 255, .12); color: var(--text-d); font-size: 13px; line-height: 1.25;
+  box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .7); /* no backdrop blur: the chips bob over the live shader, so it would re-blur every frame */
   transform: translateZ(60px);
 }
 .chip small { display: block; color: var(--muted-d); font-size: 11.5px; }
@@ -598,7 +606,7 @@ section[id] { scroll-margin-top: 0; }
 .gc-chip::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 32%, rgba(0, 0, 0, .18) 33% 35%, transparent 36% 64%, rgba(0, 0, 0, .18) 65% 67%, transparent 68%), linear-gradient(0deg, transparent 45%, rgba(0, 0, 0, .18) 46% 54%, transparent 55%); }
 .gc-num { font: 500 clamp(14px, 1.4vw, 17px)/1 var(--f-b); letter-spacing: .14em; opacity: .8; }
 .gc-bank { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .78; }
-.safe { position: absolute; right: -6%; bottom: -18%; width: 250px; padding: 16px 18px 18px; border-radius: 20px; background: rgba(26, 26, 46, .86); border: 1px solid rgba(255, 255, 255, .12); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7); font-size: 12.5px; color: var(--muted-d); }
+.safe { position: absolute; right: -6%; bottom: -18%; width: 250px; padding: 16px 18px 18px; border-radius: 20px; background: rgba(26, 26, 46, .94); border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7); font-size: 12.5px; color: var(--muted-d); }
 .safe-k { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: var(--text-d); display: flex; justify-content: space-between; align-items: center; }
 .safe-k span { font-size: 10.5px; letter-spacing: .08em; color: var(--faint-d); }
 .safe-bar { display: flex; gap: 4px; height: 12px; margin: 14px 0 12px; }
@@ -685,7 +693,7 @@ html.rm .faq-list details::details-content { transition: none; }
 }
 .wl-ring.r2 { width: min(560px, 110vw); animation-duration: 36s; animation-direction: reverse; opacity: .6; }
 .wl:not(.is-on) .wl-ring, .wl:not(.is-on) .wl-orb { animation-play-state: paused; }
-.wl-card { position: relative; border-radius: 30px; padding: clamp(24px, 3.2vw, 40px); background: linear-gradient(180deg, rgba(36, 36, 58, .8), rgba(22, 22, 40, .84)); border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 40px 100px -40px rgba(0, 0, 0, .8), 0 1px 0 rgba(255, 255, 255, .06) inset; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+.wl-card { position: relative; border-radius: 30px; padding: clamp(24px, 3.2vw, 40px); background: linear-gradient(180deg, rgba(36, 36, 58, .93), rgba(22, 22, 40, .95)); border: 1px solid rgba(255, 255, 255, .1); box-shadow: 0 40px 100px -40px rgba(0, 0, 0, .8), 0 1px 0 rgba(255, 255, 255, .06) inset; } /* no backdrop blur: the rings behind it spin, so it would re-blur every frame */
 .field { margin-bottom: 24px; }
 .field > label, legend { display: block; font-weight: 600; font-size: 15px; color: var(--text-d); margin-bottom: 12px; padding: 0; line-height: 1.4; }
 .opt { font-weight: 400; color: var(--faint-d); }
@@ -758,22 +766,33 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
 .hero.gl-on .hero-cursor { display: none; }
 /* Glass glare on the phone (container only; screen content untouched) */
 @property --gx { syntax: '<number>'; inherits: false; initial-value: 0; }
-.fx-glare { position: absolute; inset: 11px; border-radius: 48px; pointer-events: none; z-index: 4; mix-blend-mode: soft-light; opacity: .55; transition: --gx 1s var(--ease);
+.fx-glare { position: absolute; inset: 11px; border-radius: 48px; pointer-events: none; z-index: 4; opacity: .3; /* plain blending: soft-light forced an extra compositing pass over the 3D phone */ transition: --gx 1s var(--ease);
   background: linear-gradient(calc(110deg + var(--gx, 0) * 30deg), transparent 30%, rgba(255, 255, 255, .55) 46%, rgba(255, 255, 255, 0) 60%) calc(50% + var(--gx, 0) * 60%) 0 / 220% 100% no-repeat; }
 
 /* Sheets: each rounded section widens from a card into full width as it arrives,
    while the one underneath sinks back and dims (desktop) */
-.fx-sheets main > .sheet, .fx-sheets .site-ftr { background: transparent; }
+/* Only the first screen of a section ever shows the narrow "card", so the animated
+   background (.fx-bg) covers just that and stays on its own layer for good. A whole-section
+   layer (thousands of px tall at 2x) took 100-200ms to draw each time a transition started.
+   Below the first screen the section paints its own colour again. */
+.fx-sheets main > .sheet, .fx-sheets .site-ftr { background: linear-gradient(transparent 100vh, var(--sheet-c) 100vh); }
+.fx-sheets .s-dark { --sheet-c: var(--ink); } .fx-sheets .s-light { --sheet-c: var(--paper); } .fx-sheets .s-white { --sheet-c: var(--white); } .fx-sheets .site-ftr { --sheet-c: #08080F; }
 .fx-bg, .fx-under, .fx-dim { position: absolute; left: 0; right: 0; top: 0; pointer-events: none; }
-.fx-bg { bottom: 0; z-index: -1; border-radius: inherit; transform-origin: 50% 0; }
+.fx-bg { height: min(100%, calc(100vh + 120px)); z-index: -1; border-radius: inherit; transform-origin: 50% 0; will-change: transform; }
 .s-dark > .fx-bg { background: var(--ink); }
 .s-light > .fx-bg { background: var(--paper); }
 .s-white > .fx-bg { background: var(--white); }
 .site-ftr > .fx-bg { background: #08080F; }
 /* starts below the rounded corners, where the previous section itself still shows */
 .fx-under { top: var(--sheet); height: min(100%, 100vh); z-index: -2; transform-origin: 50% 0; will-change: transform, opacity; }
-.fx-dim { bottom: 0; z-index: 60; background: var(--ink); opacity: 0; border-radius: inherit; will-change: opacity; } /* own layer: fading it never repaints the section */
-.fx-moving { will-change: transform; }
+/* The dim only ever shows on the bottom screen of the section underneath, so it covers just
+   that (and stays clear of the rounded top), which keeps it a cheap solid-colour layer. */
+.fx-dim { top: auto; bottom: 0; height: min(calc(100% - var(--sheet)), 100vh); z-index: 60; background: var(--ink); opacity: 0; will-change: opacity; }
+
+.fx-lean { will-change: transform; }
+/* Scroll-linked glows keep their own layer for good: moving them never repaints, and GSAP's 2D/3D
+   switch at the ends of a scrub doesn't rebuild a large blurred layer. */
+.horizon, .aurora, .money-orb, .wl-glow, .ftr-word { will-change: transform; } /* headings that lean with scroll speed: own layer, no repaint */
 
 /* Stats: odometer columns (built by JS, removed again when the roll ends) */
 .stat-num > [data-count] { display: inline-block; height: .9em; vertical-align: top; } /* same box before, during and after the roll */
@@ -1302,8 +1321,8 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js" defer></script>
-<script src="/assets/fx/hero-gl.js" defer></script>
-<script src="/assets/fx/fx.js" defer></script>
+<script src="/assets/fx/hero-gl.js?v=2" defer></script>
+<script src="/assets/fx/fx.js?v=2" defer></script>
 <script>
 /* Core behaviour: runs immediately, never waits on the CDN. */
 (function () {
@@ -1382,13 +1401,23 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
 
   /* ---------- Header theme + active nav (rAF-throttled, passive) ---------- */
   var hdr = $('#hdr'), secs = $$('main > section, .site-ftr'), navLinks = $$('.nav a'), hq = false;
+  // Section positions are measured once (and again when the layout changes), not every frame:
+  // reading layout mid-scroll forced the browser to recompute it on every frame.
+  var secTop = [], secBot = [];
+  function secMeasure() {
+    var y = window.scrollY;
+    for (var i = 0; i < secs.length; i++) { var r = secs[i].getBoundingClientRect(); secTop[i] = r.top + y; secBot[i] = r.bottom + y; }
+  }
+  secMeasure();
+  window.addEventListener('load', secMeasure);
+  if ('ResizeObserver' in window) { var srq = false; new ResizeObserver(function () { if (!srq) { srq = true; requestAnimationFrame(function () { srq = false; secMeasure(); hdrUpdate(); }); } }).observe(document.body); }
   function hdrUpdate() {
     hq = false;
-    var cur = null, mid = window.innerHeight * 0.45, act = null;
+    var cur = null, y = window.scrollY, mid = window.innerHeight * 0.45, act = null;
     for (var i = 0; i < secs.length; i++) {
-      var r = secs[i].getBoundingClientRect();
-      if (r.top <= 42) cur = secs[i];
-      if (r.top <= mid && r.bottom > mid) act = secs[i];
+      var top = secTop[i] - y;
+      if (top <= 42) cur = secs[i];
+      if (top <= mid && secBot[i] - y > mid) act = secs[i];
     }
     hdr.classList.toggle('on-light', !!cur && (cur.classList.contains('s-light') || cur.classList.contains('s-white')));
     navLinks.forEach(function (a) { a.classList.toggle('is-active', !!act && a.getAttribute('href') === '#' + act.id); });
@@ -1466,6 +1495,13 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
     sticky.appendChild(glow); sticky.appendChild(tilt); sticky.appendChild(cap);
     stage.appendChild(sticky); sc.appendChild(stage);
     root.classList.add('sc-ready');
+    // The stacked screens are hidden until their turn, so as lazy images they'd only load and
+    // decode mid-wipe (a visible hitch). Fetch and decode them quietly once the page has loaded.
+    function warm() {
+      layers.forEach(function (l) { var im = $('img', l); im.loading = 'eager'; if (im.decode) im.decode().catch(function () {}); });
+    }
+    if (document.readyState === 'complete') setTimeout(warm, 600);
+    else window.addEventListener('load', function () { setTimeout(warm, 600); });
     var cur = -1, act = -1, lastTilt = '';
 
     function show(i) {
@@ -1489,12 +1525,22 @@ textarea.in { height: 104px; padding: 14px 18px; resize: vertical; }
       turn.animate([{ transform: 'none' }, { transform: 'rotateY(' + (-9 * dir) + 'deg) translateZ(-36px)', offset: 0.4 }, { transform: 'none' }], { duration: 1100, easing: 'cubic-bezier(.45, 0, .2, 1)' });
       cur = i;
     }
+    // Step positions are cached (re-measured on layout changes), so scrolling only reads scrollY.
+    var wide = false, stTop = [], stH = [];
+    function measure() {
+      wide = !!stage.offsetParent; // narrow screens: stacked layout, nothing to do
+      var y = window.scrollY;
+      steps.forEach(function (s, i) { var r = s.getBoundingClientRect(); stTop[i] = r.top + y; stH[i] = r.height; });
+    }
+    measure();
+    window.addEventListener('load', function () { measure(); update(); });
+    if ('ResizeObserver' in window) { var mq = false; new ResizeObserver(function () { if (!mq) { mq = true; requestAnimationFrame(function () { mq = false; measure(); update(); }); } }).observe(document.body); }
     function update() {
-      if (!stage.offsetParent) return; // narrow screens: stacked layout, nothing to do
-      var mid = window.innerHeight * 0.5, a = 0, p = 0;
+      if (!wide) return;
+      var y = window.scrollY, mid = window.innerHeight * 0.5, a = 0, p = 0;
       for (var i = 0; i < steps.length; i++) {
-        var r = steps[i].getBoundingClientRect();
-        if (r.top <= mid) { a = i; p = Math.min(1, Math.max(0, (mid - r.top) / r.height)); }
+        var top = stTop[i] - y;
+        if (top <= mid) { a = i; p = Math.min(1, Math.max(0, (mid - top) / stH[i])); }
       }
       if (a !== act) {
         steps.forEach(function (s, j) { s.classList.toggle('is-act', j === a); });
@@ -1548,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* Lenis smooth scroll */
   if (window.Lenis) {
     try {
-      var lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      var lenis = new Lenis({ lerp: 0.12, smoothWheel: true });
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
       gsap.ticker.lagSmoothing(0);

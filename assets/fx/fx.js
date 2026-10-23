@@ -41,7 +41,9 @@
     var ftr = $('.site-ftr');
     if (ftr) secs.push(ftr);
     var deep = fine && window.innerWidth > 900;   // desktop: full effect; touch: widen + dim only
-    var START = deep ? 0.9 : 0.95, SINK = deep ? 0.045 : 0;
+    // No "sink" (scaling the whole previous section): rescaling sections that tall every frame
+    // caused visible hitches on fast desktop monitors. Widen + dim carry the effect.
+    var START = deep ? 0.9 : 0.95, SINK = 0;
     var colorOf = function (el) { return el.classList.contains('s-white') ? '#FFFFFF' : el.classList.contains('s-light') ? '#F5F5F7' : null; };
     var items = [];
     for (var i = 1; i < secs.length; i++) {
@@ -326,9 +328,21 @@
     var L = window.GR && window.GR.lenis;
     if (!fine || !L) return;
     var els = $$('.h2, .ftr-word');
-    var to = els.map(function (el) { return gsap.quickTo(el, 'skewY', { duration: 0.6, ease: 'power3' }); });
+    // Only headings on screen lean, each on its own layer (.fx-lean): skewing every heading
+    // on the page every frame repainted the whole page underneath them.
+    var to = els.map(function (el) { el.classList.add('fx-lean'); return gsap.quickTo(el, 'skewY', { duration: 0.6, ease: 'power3' }); });
+    var vis = els.map(function () { return false; });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          var i = els.indexOf(en.target); vis[i] = en.isIntersecting;
+          if (!en.isIntersecting) gsap.set(en.target, { skewY: 0 });
+        });
+      });
+      els.forEach(function (el) { io.observe(el); });
+    } else { vis = vis.map(function () { return true; }); }
     var last = 0, rest;
-    function lean(v) { last = v; for (var i = 0; i < to.length; i++) to[i](v); }
+    function lean(v) { last = v; for (var i = 0; i < to.length; i++) if (vis[i]) to[i](v); }
     L.on('scroll', function (e) {
       var v = clamp(-(e.velocity || 0) * 0.07, -2, 2);
       clearTimeout(rest); rest = setTimeout(function () { lean(0); }, 120);   // always settle back to straight

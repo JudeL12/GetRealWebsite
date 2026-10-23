@@ -111,7 +111,7 @@
 
   /* Resolution: the field is soft, so it renders well below screen resolution and is
      upscaled by the browser. `scale` drops further if the device struggles. */
-  var scale = touch || small ? 0.32 : 0.5, W = 0, H = 0, vh = 0, heroH = 1;
+  var scale = touch || small ? 0.32 : 0.42, W = 0, H = 0, vh = 0, heroH = 1;
   function size() {
     var dpr = Math.min(window.devicePixelRatio || 1, 1.5);   // DPR capped: the field is soft anyway
     W = Math.max(2, Math.round(host.clientWidth * dpr * scale));
@@ -155,8 +155,10 @@
 
   function loop(ts) {
     raf = requestAnimationFrame(loop);
-    // Phones: 30fps is plenty for a slow-moving field.
+    // Phones: 30fps is plenty for a slow-moving field. Desktop: cap at ~60fps, so 120/144Hz
+    // monitors don't spend twice the GPU on a field that moves this slowly.
     if (touch) { skip = !skip; if (skip) return; }
+    else if (last && ts - last < 12) return;
     // Auto-degrade: once the intro has settled, watch real frame gaps for ~1s.
     if (last && slow !== null && ts - t0 > 2600) {
       slow.push(ts - last);
